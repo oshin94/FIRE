@@ -1,0 +1,276 @@
+<html>
+	<head>
+		<div style="text-align:center">
+			<!-- <canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;"></canvas> -->
+			<script>
+				<!-- var c = document.getElementById("myCanvas");
+				<!-- var ctx = c.getContext("2d");
+				/*ctx.fillStyle="white";
+
+				ctx.beginPath();
+					ctx.strokeStyle="blue";
+					ctx.moveTo(0,250);
+					ctx.lineTo(500,250);
+					ctx.stroke();
+
+					ctx.moveTo(250,0);
+					ctx.lineTo(250,500);
+					ctx.stroke();
+				ctx.closePath(); -->
+
+				ctx.fillStyle="black";
+				for (var j=0; j<500; j+=5){
+					ctx.beginPath();
+						ctx.strokeStyle="grey";
+						ctx.lineWidth = 0.2;
+						ctx.moveTo(j,0);
+						ctx.lineTo(j,500);
+						ctx.stroke();
+					ctx.closePath();
+					
+					ctx.beginPath();
+						ctx.strokeStyle="grey";
+						ctx.lineWidth = 0.4;
+						ctx.moveTo(0,j);
+						ctx.lineTo(500,j);
+						ctx.stroke();
+					ctx.closePath();
+				}
+
+
+				for (var i=0; i<500; i+=25){
+					ctx.beginPath();
+						ctx.strokeStyle="black";
+						ctx.lineWidth = 2;
+						ctx.moveTo(i,245);
+						ctx.lineTo(i,255);
+						ctx.stroke();
+						
+						ctx.font = "10px Calibri";
+						ctx.fillText(-250+i,i,246);
+
+						ctx.moveTo(245,i);
+						ctx.lineTo(255,i);
+						ctx.stroke();
+					
+					
+						ctx.font = "10px Calibri";
+						ctx.fillText(250-i,258,i);
+					ctx.closePath();
+				} */
+
+				function Line(){
+					var m = parseInt(document.getElementById("slope").value);
+					var c = parseInt(document.getElementById("intercept").value);
+					/* var x1 = parseInt(document.getElementById("x1").value);
+					var x2 = parseInt(document.getElementById("x2").value); */
+					
+					/* y1 = m*x1+c;
+					y2 = m*x2+c; */
+					if (m == 0){
+						lgy1 = 250-c;
+						lgy2 = 250-c;
+						
+						lgx1 = 0;
+						lgx2 = 500;
+					}
+					else{
+						lgy1 = 250+300;
+						lgy2 = 250-300;
+					
+						lx1 = (-300-c)/m;
+						lx2 = (300-c)/m;
+						
+						lgx1 = 250+lx1;
+						lgx2 = 250+lx2;
+					}
+					console.log(lgx1, lgy1);
+					console.log(lgx2, lgy2);
+					
+					ctx.beginPath();
+						ctx.strokeStyle = 'black';
+						ctx.lineWidth = 2;
+						ctx.moveTo(lgx1,lgy1);
+						ctx.lineTo(lgx2,lgy2);
+						ctx.stroke();
+					ctx.closePath();
+					
+					var x = document.getElementById("mydiv");
+					x.style.display = "block";
+				}
+
+				function Area(){
+					var m = parseInt(document.getElementById("slope").value);
+					var c = parseInt(document.getElementById("intercept").value);
+					var x1 = parseInt(document.getElementById("x1").value);
+					var x2 = parseInt(document.getElementById("x2").value);
+					
+					y1 = m*x1+c;
+					y2 = m*x2+c;
+					
+					lgx1 = 250+x1;
+					lgy1 = 250-y1;
+					
+					lgx2 = 250+x2;
+					lgy2 = 250-y2;	
+					
+					ctx.beginPath();
+					ctx.strokeStyle = 'pink';
+					ctx.moveTo(lgx1, lgy1);
+					ctx.lineTo(lgx1, lgy1+y1);
+					ctx.stroke();
+					
+					ctx.moveTo(lgx2, lgy2);
+					ctx.lineTo(lgx2, lgy2+y2);
+					ctx.stroke();
+					ctx.closePath();
+					
+					ctx.fillStyle = "yellow";
+						ctx.beginPath();
+						ctx.strokeStyle = 'pink';
+						ctx.moveTo(lgx1, lgy1);
+						ctx.lineTo(lgx1, lgy1+y1);
+						ctx.lineTo(lgx2, lgy2+y2);
+						ctx.lineTo(lgx2, lgy2);
+						ctx.stroke();
+						ctx.closePath();
+					ctx.fill();
+					
+					console.log("x1: ", x1);
+					console.log("x2: ", x2);
+					console.log("slope: ", m);
+					console.log("intercept: ", c);
+					
+					//ar = (m*(x2*x2)/2+c) - (m*(x1*x1)/2+c)
+					ar = (((m*x2*x2)+2*c*x2)/2)-(((m*x1*x1)+2*c*x1)/2)
+					var y = document.getElementById("ar");
+					y.style.display="block";
+					y.innerHTML = "The area is: "+ar;
+					
+				}
+				
+				function inflation(){
+					//FV = PV*(1+i)^n
+					var expns = parseInt(document.getElementById("expns").value);
+					var infl = parseInt(document.getElementById("infl").value);
+					var years = parseInt(document.getElementById("years").value);
+
+					console.log(expns, infl, years);
+					
+					mon_inc = Math.round(expns * Math.pow((1+(infl/100)), years));
+					console.log(mon_inc);
+					
+					var y = document.getElementById("mon");
+					y.style.display="block";
+					y.innerHTML = "Your will need Rs "+mon_inc+" to continue your current standard of living after "+years+" years";
+					
+					document.getElementById("expns").disabled=true;
+					document.getElementById("infl").disabled=true;
+					document.getElementById("years").disabled=true;
+					
+					corpus = Math.round((mon_inc*12)/0.04);
+					
+					var y = document.getElementById("corp");
+					y.style.display="block";
+					y.innerHTML = "For achieving financial independence/retire after "+years+" years, you need to save/accumulate at least Rs "+corpus+" by the coming "+years+" years. <br> By retiring, I mean if you have this amount in some bank/fund etc, you can live off that amount without having to work you ass off but just live on the interest it generates. <br> But alas, the number is huge number na? Dont fret, lets plan";
+					
+					var y = document.getElementById("fire");
+					y.style.display="block";
+					y.innerHTML = "This is your Finanical indepence Retire Early (FIRE) number: "+corpus+". If you want to be FIRE by the next "+years+" years";
+					
+					
+					var y = document.getElementById("ques");
+					y.style.display="block";
+					y.innerHTML = "The important question is, how do you achieve it? Fill in the below details to get the answer.";
+					
+					var y = document.getElementById("rate");
+					y.style.display="block";
+					
+				}
+					
+					
+				function simulate_r(){
+					var expns = parseInt(document.getElementById("expns").value);
+					var infl = parseInt(document.getElementById("infl").value);
+					var years = parseInt(document.getElementById("years").value);
+
+					console.log(expns, infl, years);
+					
+					mon_inc = Math.round(expns * Math.pow((1+(infl/100)), years));
+					
+					var i=4;
+					var mon_inv = parseInt(document.getElementById("mon_inv").value);
+					var ex_inv = parseInt(document.getElementById("ex_inv").value);
+					var years = parseInt(document.getElementById("years").value);
+					fire = Math.round((mon_inc*12)/0.04); //parseInt(document.getElementById("infl").value);
+					
+					
+					while (i<25){
+						r = (1+i/100)
+						if (Math.abs( ex_inv*Math.pow(r,years) + ((mon_inv * 12) * r * ((1-Math.pow(r,years))/(1-r))) - fire) <= 50000){
+							break;
+						}
+						i+=0.01
+					}
+					
+					rate = Math.round((r-1)*100);
+					
+					var y = document.getElementById("roi");
+					y.style.display="block";
+					y.innerHTML = "So, you need to find some fund/deposit/investment instrument which gives " +rate+" % return on your investments every year, and invest your money there. Then after "+years+" years, you will acheive FIRE. Keep in mind your existing savings should also grow by this percent. Putting money in savings account may not help. :) <br><br> Refresh page to calculate again";
+					
+					document.getElementById("rate").disabled=true;
+				}
+			
+			</script>
+			<div>
+				What is your current monthly expense?: <input type="text" id="expns">
+				<br><br>
+				In how many years do you want to retire?: <input type="text" id="years">
+				<br><br>
+				what do you think the inflation rate will be in the coming years? (a good value is around 6%): <input type="text" id="infl">
+				<br><br>
+				<button onclick="inflation()">Calculate amount</button>
+				<!-- <div id = "mydiv" style="display:none">
+					X1: <input type="text" id="x1" >
+					<br>
+					X2: <input type="text" id="x2">
+					<br>
+					<button onclick="Area()">Find Area</button>
+				</div> -->
+				<div>
+					<p id= "mon" style="display:none"></p>
+				</div>
+				<br>
+				<div>
+					<p id= "corp" style="display:none"></p>
+				</div>
+				<br>
+				<div>
+					<p id= "fire" style="display:none"></p>
+				</div>
+				<br>
+				<div>
+					<p id= "ques" style="display:none"></p>
+				</div>
+				<br>
+				<div id= "rate" style="display:none">
+					How much money are you willing to invest/save per month?: <input type="text" id="mon_inv" >
+					<br><br>
+					Do you have any existing invested amount, type the total amount?: <input type="text" id="ex_inv">
+					<br><br>
+					<button onclick="simulate_r()">Calculate required interest rate</button>
+					<br>
+				</div>
+				<br>
+				<div>
+					<p id= "roi" style="display:none"></p>
+				</div>
+				
+			</div>
+		</div>
+	</head>
+	
+	<body>
+	</body>
+</html>
