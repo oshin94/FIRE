@@ -58,96 +58,6 @@
 						ctx.fillText(250-i,258,i);
 					ctx.closePath();
 				} */
-
-				function Line(){
-					var m = parseInt(document.getElementById("slope").value);
-					var c = parseInt(document.getElementById("intercept").value);
-					/* var x1 = parseInt(document.getElementById("x1").value);
-					var x2 = parseInt(document.getElementById("x2").value); */
-					
-					/* y1 = m*x1+c;
-					y2 = m*x2+c; */
-					if (m == 0){
-						lgy1 = 250-c;
-						lgy2 = 250-c;
-						
-						lgx1 = 0;
-						lgx2 = 500;
-					}
-					else{
-						lgy1 = 250+300;
-						lgy2 = 250-300;
-					
-						lx1 = (-300-c)/m;
-						lx2 = (300-c)/m;
-						
-						lgx1 = 250+lx1;
-						lgx2 = 250+lx2;
-					}
-					console.log(lgx1, lgy1);
-					console.log(lgx2, lgy2);
-					
-					ctx.beginPath();
-						ctx.strokeStyle = 'black';
-						ctx.lineWidth = 2;
-						ctx.moveTo(lgx1,lgy1);
-						ctx.lineTo(lgx2,lgy2);
-						ctx.stroke();
-					ctx.closePath();
-					
-					var x = document.getElementById("mydiv");
-					x.style.display = "block";
-				}
-
-				function Area(){
-					var m = parseInt(document.getElementById("slope").value);
-					var c = parseInt(document.getElementById("intercept").value);
-					var x1 = parseInt(document.getElementById("x1").value);
-					var x2 = parseInt(document.getElementById("x2").value);
-					
-					y1 = m*x1+c;
-					y2 = m*x2+c;
-					
-					lgx1 = 250+x1;
-					lgy1 = 250-y1;
-					
-					lgx2 = 250+x2;
-					lgy2 = 250-y2;	
-					
-					ctx.beginPath();
-					ctx.strokeStyle = 'pink';
-					ctx.moveTo(lgx1, lgy1);
-					ctx.lineTo(lgx1, lgy1+y1);
-					ctx.stroke();
-					
-					ctx.moveTo(lgx2, lgy2);
-					ctx.lineTo(lgx2, lgy2+y2);
-					ctx.stroke();
-					ctx.closePath();
-					
-					ctx.fillStyle = "yellow";
-						ctx.beginPath();
-						ctx.strokeStyle = 'pink';
-						ctx.moveTo(lgx1, lgy1);
-						ctx.lineTo(lgx1, lgy1+y1);
-						ctx.lineTo(lgx2, lgy2+y2);
-						ctx.lineTo(lgx2, lgy2);
-						ctx.stroke();
-						ctx.closePath();
-					ctx.fill();
-					
-					console.log("x1: ", x1);
-					console.log("x2: ", x2);
-					console.log("slope: ", m);
-					console.log("intercept: ", c);
-					
-					//ar = (m*(x2*x2)/2+c) - (m*(x1*x1)/2+c)
-					ar = (((m*x2*x2)+2*c*x2)/2)-(((m*x1*x1)+2*c*x1)/2)
-					var y = document.getElementById("ar");
-					y.style.display="block";
-					y.innerHTML = "The area is: "+ar;
-					
-				}
 				
 				function inflation(){
 					//FV = PV*(1+i)^n
@@ -198,19 +108,19 @@
 					
 					mon_inc = Math.round(expns * Math.pow((1+(infl/100)), years));
 					
-					var i=4;
+					var i=0.1;
 					var mon_inv = parseInt(document.getElementById("mon_inv").value);
 					var ex_inv = parseInt(document.getElementById("ex_inv").value);
 					var years = parseInt(document.getElementById("years").value);
 					fire = Math.round((mon_inc*12)/0.04); //parseInt(document.getElementById("infl").value);
 					
 					
-					while (i<25){
+					while (1){
 						r = (1+i/100)
-						if (Math.abs( ex_inv*Math.pow(r,years) + ((mon_inv * 12) * r * ((1-Math.pow(r,years))/(1-r))) - fire) <= 50000){
+						if (( ex_inv*Math.pow(r,years) + ((mon_inv * 12) * r * ((1-Math.pow(r,years))/(1-r))) - fire) > 0){
 							break;
 						}
-						i+=0.01
+						i+=0.001
 					}
 					
 					rate = Math.round((r-1)*100);
@@ -241,19 +151,15 @@
 				<div>
 					<p id= "mon" style="display:none"></p>
 				</div>
-				<br>
 				<div>
 					<p id= "corp" style="display:none"></p>
 				</div>
-				<br>
 				<div>
 					<p id= "fire" style="display:none"></p>
 				</div>
-				<br>
 				<div>
 					<p id= "ques" style="display:none"></p>
 				</div>
-				<br>
 				<div id= "rate" style="display:none">
 					How much money are you willing to invest/save per month?: <input type="text" id="mon_inv" >
 					<br><br>
