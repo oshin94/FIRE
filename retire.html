@@ -2,63 +2,7 @@
 	<head>
 		<div style="text-align:center">
 			<!-- <canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;"></canvas> -->
-			<script>
-				<!-- var c = document.getElementById("myCanvas");
-				<!-- var ctx = c.getContext("2d");
-				/*ctx.fillStyle="white";
-
-				ctx.beginPath();
-					ctx.strokeStyle="blue";
-					ctx.moveTo(0,250);
-					ctx.lineTo(500,250);
-					ctx.stroke();
-
-					ctx.moveTo(250,0);
-					ctx.lineTo(250,500);
-					ctx.stroke();
-				ctx.closePath(); -->
-
-				ctx.fillStyle="black";
-				for (var j=0; j<500; j+=5){
-					ctx.beginPath();
-						ctx.strokeStyle="grey";
-						ctx.lineWidth = 0.2;
-						ctx.moveTo(j,0);
-						ctx.lineTo(j,500);
-						ctx.stroke();
-					ctx.closePath();
-					
-					ctx.beginPath();
-						ctx.strokeStyle="grey";
-						ctx.lineWidth = 0.4;
-						ctx.moveTo(0,j);
-						ctx.lineTo(500,j);
-						ctx.stroke();
-					ctx.closePath();
-				}
-
-
-				for (var i=0; i<500; i+=25){
-					ctx.beginPath();
-						ctx.strokeStyle="black";
-						ctx.lineWidth = 2;
-						ctx.moveTo(i,245);
-						ctx.lineTo(i,255);
-						ctx.stroke();
-						
-						ctx.font = "10px Calibri";
-						ctx.fillText(-250+i,i,246);
-
-						ctx.moveTo(245,i);
-						ctx.lineTo(255,i);
-						ctx.stroke();
-					
-					
-						ctx.font = "10px Calibri";
-						ctx.fillText(250-i,258,i);
-					ctx.closePath();
-				} */
-				
+			<script>				
 				function inflation(){
 					//FV = PV*(1+i)^n
 					var expns = parseInt(document.getElementById("expns").value);
@@ -114,6 +58,10 @@
 					var years = parseInt(document.getElementById("years").value);
 					fire = Math.round((mon_inc*12)/0.04); //parseInt(document.getElementById("infl").value);
 					
+					console.log("ex_inv", ex_inv, "exinv");
+					if (isNaN(ex_inv)) {
+						ex_inv = 0;
+					}
 					
 					while (1){
 						r = (1+i/100)
@@ -163,7 +111,7 @@
 				<div id= "rate" style="display:none">
 					How much money are you willing to invest/save per month?: <input type="text" id="mon_inv" >
 					<br><br>
-					Do you have any existing invested amount, type the total amount?: <input type="text" id="ex_inv">
+					Do you have any existing invested amount, type the total amount?: <input type="text" value="0" placeholder="0" id="ex_inv">
 					<br><br>
 					<button onclick="simulate_r()">Calculate required interest rate</button>
 					<br>
